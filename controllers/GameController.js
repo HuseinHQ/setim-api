@@ -1,6 +1,10 @@
 const axios = require("axios");
 
 const baseURL = "https://api.igdb.com/v4/games";
+const headers = {
+  "Client-ID": process.env["Client-ID"],
+  Authorization: process.env.Authorization,
+};
 
 class GameController {
   static async getGamesWithPagination(req, res, next) {
@@ -10,10 +14,7 @@ class GameController {
         method: "post",
         url: baseURL,
         data: `fields name; offset ${offset}; limit ${limit};`,
-        headers: {
-          "Client-ID": process.env["Client-ID"],
-          Authorization: process.env.Authorization,
-        },
+        headers,
       });
 
       res.status(200).json(data);
@@ -22,8 +23,22 @@ class GameController {
     }
   }
 
-  static async getPopularGames(req, res, next) {
+  static async getGameDetails(req, res, next) {
     try {
+      const { id } = req.params;
+
+      const { data } = await axios({
+        method: "post",
+        url: baseURL,
+        data: `fields *; where id = ${id};`,
+        headers,
+      });
+
+      if (data.length === 0) {
+        throw { name: "game_not_found" };
+      }
+
+      res.status(200).json(data);
     } catch (error) {
       next(error);
     }

@@ -16,6 +16,16 @@ function errorHandler(err, req, res, next) {
     message = "Invalid Username/Password";
   }
 
+  if (err.name === "game_not_found") {
+    status = 404;
+    message = "Game not found!";
+  }
+
+  if (err.response.status === 401) {
+    status = 401;
+    message = "Unauthorized";
+  }
+
   res.status(status).json({ message });
 }
 
