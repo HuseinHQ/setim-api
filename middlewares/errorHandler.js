@@ -26,6 +26,11 @@ function errorHandler(err, req, res, next) {
     message = "Unauthorized";
   }
 
+  if (err.name === "JsonWebTokenError") {
+    status = 401;
+    message = "Invalid Token";
+  }
+
   res.status(status).json({ message });
 }
 
