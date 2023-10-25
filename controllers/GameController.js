@@ -14,7 +14,7 @@ class GameController {
       const { data } = await axios({
         method: "post",
         url: baseURL + "/games",
-        data: `fields id,name,cover,genres; offset ${offset}; limit ${limit};`,
+        data: `fields id,name,cover,genres,total_rating_count; offset ${offset}; limit ${limit}; sort total_rating_count desc; where total_rating_count != null;`,
         headers,
       });
 
