@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const baseURL = "https://api.igdb.com/v4/games";
+const baseURL = "https://api.igdb.com/v4";
 const headers = {
   "Client-ID": process.env["Client-ID"],
   Authorization: process.env.Authorization,
@@ -12,12 +12,43 @@ class GameController {
       const { offset = 0, limit = 12 } = req.query;
       const { data } = await axios({
         method: "post",
-        url: baseURL,
-        data: `fields name; offset ${offset}; limit ${limit};`,
+        url: baseURL + "/games",
+        data: `fields id,name,cover,genres; offset ${offset}; limit ${limit};`,
         headers,
       });
 
-      res.status(200).json(data);
+      const gameDetailPromise = data.map(async (el) => {
+        if (el.cover) {
+          const { data } = await axios({
+            method: "post",
+            url: baseURL + "/covers",
+            headers,
+            data: `fields height,image_id,url,width; where id = ${el.cover};`,
+          });
+
+          el.cover = data.map((el) => {
+            const img = el.url.split("/").at(-1);
+            el.url = `https://images.igdb.com/igdb/image/upload/t_cover_big/${img}`;
+            return el;
+          });
+        }
+
+        if (el.genres) {
+          const { data } = await axios({
+            method: "post",
+            url: baseURL + "/genres",
+            data: `fields name; where id = (${el.genres.join(",")});`,
+            headers,
+          });
+
+          el.genres = data;
+        }
+        return el;
+      });
+
+      const gameDetail = await Promise.all(gameDetailPromise);
+
+      res.status(200).json(gameDetail);
     } catch (error) {
       next(error);
     }
