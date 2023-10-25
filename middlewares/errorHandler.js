@@ -1,4 +1,5 @@
 function errorHandler(err, req, res, next) {
+  console.log(err, "<<<<<<<<<<<<<<");
   let status = 500;
   let message = "Internal Server Error";
 
@@ -28,6 +29,11 @@ function errorHandler(err, req, res, next) {
   if (err.name === "JsonWebTokenError") {
     status = 401;
     message = "Invalid Token";
+  }
+
+  if (err.name === "user_not_found") {
+    status = 404;
+    message = "User not found";
   }
 
   res.status(status).json({ message });

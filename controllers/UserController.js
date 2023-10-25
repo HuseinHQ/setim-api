@@ -38,7 +38,7 @@ class UserController {
 
       // Buat access token
       const payload = {
-        id: findUser.id,
+        id: findUser.User.id,
       };
       const access_token = createToken(payload);
 
@@ -48,7 +48,7 @@ class UserController {
     }
   }
 
-  static async getMidtransToken(req, res, next) {
+  static async createMidtransToken(req, res, next) {
     try {
       const midtransClient = require("midtrans-client");
 
@@ -57,19 +57,22 @@ class UserController {
         serverKey: process.env.MIDTRANS_SERVER_KEY,
       });
 
+      const findUser = await User.findByPk(1, {
+        include: Profile,
+      });
+      console.log(findUser.email);
+
       let parameter = {
         transaction_details: {
-          order_id: "ORDERID-" + Math.random() * 1000,
-          gross_amount: 10000,
+          order_id: "ORDERID-" + Math.random() * 100000,
+          gross_amount: 109000,
         },
         credit_card: {
           secure: true,
         },
         customer_details: {
-          first_name: "budi",
-          last_name: "pratama",
-          email: "budi.pra@example.com",
-          phone: "08111222333",
+          first_name: findUser.Profile.realName,
+          email: findUser.email,
         },
       };
 
