@@ -15,5 +15,6 @@ router.get("/games/:id", GameController.getGameDetails);
 // ROUTES BELLOW NEED AUTHENTICATION
 router.use(authentication);
 router.post("/libraries", LibraryController.createLibrary);
+router.get("/generate-midtrans-token", UserController.getMidtransToken);
 
 module.exports = router;
