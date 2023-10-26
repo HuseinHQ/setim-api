@@ -8,6 +8,10 @@ Welcome to the documentation for Setim Gamestore!.
 - [Endpoints](#endpoints)
   - [1. /register](#1-register)
   - [2. /login](#2-login)
+  - [3. /games](#3-games)
+  - [4. /games/:id](#4-games)
+  - [5. /libraries](#5-libraries)
+  - [6. /generate-midtrans-token](#6-generate-midtrans-token)
 - [Global Errors](#global-errors)
 
 
@@ -94,6 +98,270 @@ Login into apps.
   "message": "Invalid Username/Password"
 }
 ```
+
+### 3. /games
+
+#### Endpoint Description
+
+Fetch games from database.
+
+#### Request
+
+- **Method**: `GET`
+- **Endpoint**: `/games`
+
+#### Response
+
+- _200 - OK_.
+```json
+[
+  {
+    "id": Number,
+    "cover": [
+      {
+        "id": Number,
+        "height": Number,
+        "image_id": String,
+        "url": String,
+        "width": Number
+      }
+    ],
+    "genres": [
+      {
+        "id": Number,
+        "name": String
+      },
+      {
+        "id": Number,
+        "name": String
+      },
+      {
+        "id": Number,
+        "name": String
+      },
+      {
+        "id": Number,
+        "name": String
+      }
+    ],
+    "name": String,
+    "total_rating_count": Number
+  },
+  ...
+]
+```
+
+### 4. /games/:id
+
+#### Endpoint Description
+
+Fetch detail games.
+
+#### Request
+
+- **Method**: `GET`
+- **Endpoint**: `/games/:id`
+
+#### Response
+
+- _200 - OK_.
+```json
+[
+  {
+    "id": Number,
+    "cover": [
+        {
+            "id": Number,
+            "height": Number,
+            "image_id": String,
+            "url": String,
+            "width": Number
+        }
+    ],
+    "first_release_date": Number,
+    "genres": [
+        {
+            "id": Number,
+            "name": String
+        },
+        ...
+    ],
+    "name": String,
+    "rating": Number,
+    "rating_count": Number,
+    "screenshots": [
+      {
+        "id": Number,
+        "height": Number,
+        "image_id": String,
+        "url": String,
+        "width": Number
+      },
+      ...
+    ],
+    "storyline": String,
+    "summary": String
+  }
+]
+```
+
+### 5. /libraries
+
+#### Endpoint Description
+
+Fetch libraries
+
+#### Request
+
+- **Method**: `GET`
+- **Endpoint**: `/libraries`
+  **Headers**
+  ```json
+  {
+    "access_token": String
+  }
+  ```
+
+#### Response
+
+- _200 - OK_.
+```json
+[
+  {
+    "id": Number,
+    "UserId": Number,
+    "GameId": Number,
+    "isComplete": Boolean,
+    "createdAt": Date,
+    "updatedAt": Date,
+    "game_detail": {
+      "id": Number,
+      "cover": {
+        "id": Number,
+        "url": String
+      },
+      "genres": [
+          {
+            "id": Number,
+            "name": String
+          },
+          ...
+      ],
+      "name": String,
+      "summary": String
+    }
+  },
+  ...
+]
+```
+
+- **Method**: `POST`
+- **Endpoint**: `/libraries`
+- **Headers**:
+  ```json
+  {
+    "access_token": String
+  }
+  ```
+- **Body**:
+  ```json
+  {
+    "GameId": Number
+  }
+  ```
+
+#### Response
+
+- _201 - Created_.
+
+```json
+{
+  "id": Number,
+  "UserId": Number,
+  "GameId": Number,
+  "updatedAt": Date,
+  "createdAt": Date,
+  "isComplete": Boolean
+}
+```
+
+### 6. /generate-midtrans-token
+
+#### Endpoint Description
+
+Generate midtrans token
+
+#### Request
+
+- **Method**: `GET`
+- **Endpoint**: `/generate-midtrans-token`
+  **Headers**
+  ```json
+  {
+    "access_token": String
+  }
+  ```
+
+#### Response
+
+- _200 - OK_.
+```json
+[
+  {
+    "id": Number,
+    "UserId": Number,
+    "GameId": Number,
+    "isComplete": Boolean,
+    "createdAt": Date,
+    "updatedAt": Date,
+    "game_detail": {
+      "id": Number,
+      "cover": {
+        "id": Number,
+        "url": String
+      },
+      "genres": [
+          {
+            "id": Number,
+            "name": String
+          },
+          ...
+      ],
+      "name": String,
+      "summary": String
+    }
+  },
+  ...
+]
+```
+
+#### Request
+
+- **Method**: `POST`
+- **Endpoint**: `/libraries`
+- **Headers**:
+  ```json
+  {
+    "access_token": String
+  }
+  ```
+- **Body**:
+  ```json
+  {
+    "GameId": Number
+  }
+  ```
+
+#### Response
+
+- _200 - OK_.
+```json
+{
+  "transactionToken": String
+}
+```
+
+
 
 ## Global Errors
 #### Response
