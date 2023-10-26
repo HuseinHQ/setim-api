@@ -305,63 +305,12 @@ Generate midtrans token
 #### Response
 
 - _200 - OK_.
-```json
-[
-  {
-    "id": Number,
-    "UserId": Number,
-    "GameId": Number,
-    "isComplete": Boolean,
-    "createdAt": Date,
-    "updatedAt": Date,
-    "game_detail": {
-      "id": Number,
-      "cover": {
-        "id": Number,
-        "url": String
-      },
-      "genres": [
-          {
-            "id": Number,
-            "name": String
-          },
-          ...
-      ],
-      "name": String,
-      "summary": String
-    }
-  },
-  ...
-]
-```
 
-#### Request
-
-- **Method**: `POST`
-- **Endpoint**: `/libraries`
-- **Headers**:
-  ```json
-  {
-    "access_token": String
-  }
-  ```
-- **Body**:
-  ```json
-  {
-    "GameId": Number
-  }
-  ```
-
-#### Response
-
-- _200 - OK_.
 ```json
 {
-  "transactionToken": String
+  "transactionToken": "661dcf11-59b6-4293-8911-f9aa2722b184"
 }
 ```
-
-
 
 ## Global Errors
 #### Response
