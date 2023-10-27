@@ -51,6 +51,7 @@ class UserController {
   static async createMidtransToken(req, res, next) {
     try {
       const midtransClient = require("midtrans-client");
+      const { price } = req.body;
 
       let snap = new midtransClient.Snap({
         isProduction: false,
@@ -65,7 +66,7 @@ class UserController {
       let parameter = {
         transaction_details: {
           order_id: "ORDERID-" + Math.random() * 100000,
-          gross_amount: 109000,
+          gross_amount: price,
         },
         credit_card: {
           secure: true,

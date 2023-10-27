@@ -312,8 +312,17 @@ Generate midtrans token
 }
 ```
 
+
+
 ## Global Errors
 #### Response
+- _401 - Unauthorized_
+```json
+{
+  "message": "Invalid Token
+}
+```
+
 - _500 - Internal Server Error_
 ```json
 {
